@@ -1,3 +1,4 @@
+using AutoMapper;
 using Messenger.Core.IServices;
 using Messenger.db.EF;
 using Microsoft.EntityFrameworkCore;
@@ -7,11 +8,13 @@ namespace Messenger.Core.Services;
 public class BaseService<T> : IBaseService<T>
     where T : class
 {
-    public BaseService(MessengerContext context)
+    public BaseService(MessengerContext context, IMapper mapper = null)
     {
         Context = context;
+        Mapper = mapper;
     }
 
+    protected IMapper Mapper { get; set; }
     protected MessengerContext Context { get; set; }
 
     protected DbSet<T> Entities { get => Context.Set<T>(); }

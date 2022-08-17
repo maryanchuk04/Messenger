@@ -8,9 +8,9 @@ public class Message
 
     public DateTime When { get; set; } = DateTime.Now;
 
-    public Guid FromUserId { get; set; }
+    public Guid SenderId { get; set; }
+
+    public User Sender { get; set; }
 
     public Guid RoomId { get; set; }
-
-    public virtual Room Room { get; set; }
 }

@@ -7,4 +7,6 @@ public class Room
     public string Name { get; set; }
 
     public ICollection<Message> Messages { get; set; }
+
+    public ICollection<UserRoom> Users { get; set; }
 }
