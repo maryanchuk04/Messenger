@@ -1,0 +1,21 @@
+.user-component{
+    margin: 10px 0;
+    padding: 10px 0;
+}
+
+.user-component .user{
+    display: flex;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-component .user h3{
+    color:white;
+    justify-content: center;
+    
+}
+
+.user-component .message-icon{
+
+}

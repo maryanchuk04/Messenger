@@ -1,0 +1,41 @@
+.sender-bar-container{
+    width: 90%;
+    margin:  auto;
+    display: grid; 
+    grid-template-columns: 95% 5%;
+
+    padding: 10px;
+    background-color: #232727;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.4);
+    height: 8vh;
+    align-items: center;
+}
+
+.sender-bar-container .messageInput{
+    background: transparent;
+    border : none;
+    font-size: 22px;
+    padding: 20px;
+    resize: none;
+    outline: none;
+    color : white;
+    cursor: text;
+}
+
+#send{
+    background: #22a8e0;
+    border: 0;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+#send:disabled{
+    background-color: rgb(27, 15, 15);
+}
+
+#send:hover{
+    background: #0d6083;
+}

@@ -1,0 +1,23 @@
+.messages-container{
+    height: 72vh;
+    overflow-y: scroll ;
+    width: 90%;
+    margin: auto;
+    padding: 20px 0;
+}
+
+.messages-container::-webkit-scrollbar{
+    display: none;
+}
+
+
+.messages-container .left{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.messages-container .right{
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+}

@@ -1,0 +1,52 @@
+.profile-container{
+    width: 500px;
+    padding: 20px;
+    background-color: #232727;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    height: fit-content;
+}
+
+.profile-container .title{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color : white;
+}
+.profile-container .user-information{
+    margin: 10px 0;
+    width: 100%;
+}
+
+.profile-container .user-information .ava{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+
+
+.profile-container .user-information .user-form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.user-information .user-form .field{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 85% 15%;
+    margin: 10px;
+}
+
+.field input{
+    background-color: #44444493;
+    color:white;
+    padding: 10px;
+    outline: 0;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 25px;
+}

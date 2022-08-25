@@ -1,0 +1,7 @@
+.layout{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    height: 92vh;
+    max-height: 92vh;
+}

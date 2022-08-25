@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Navigate ,Route,Routes } from 'react-router-dom';
 import Header from './components/header/header';
 import MainPage from './components/main-page/mainPage';
-import AuthPage from './authenticate/authPage';
+import AuthPage from './components/authenticate/authPage';
 import './custom.css'
 import { BaseService } from './Services/BaseService';
 export default class App extends Component{

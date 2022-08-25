@@ -1,0 +1,25 @@
+#new-users-button{
+    background-color: transparent;
+    border: none;
+    height: fit-content;
+    justify-content: end;
+}
+
+.users-list{
+    padding: 30px;
+    background-color: #232727;
+    min-width:500px;
+    overflow-y: scroll;
+    max-height: 600px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.users-list h2{
+    text-align: center;
+    color : white;
+    font-weight: 600;
+    font-size: 35px;
+}
+

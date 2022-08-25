@@ -1,0 +1,49 @@
+.ride-side-container{
+    background-color: #1a1c1d;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ride-side-container .messages-header{
+    height: 8vh;
+    margin: 10px auto;
+    /* border-bottom: 2px solid #202020; */
+    display: grid;
+    width: 90%;
+    background-color:#41424244 ;
+    padding: 10px 0;
+    border-radius: 20px;
+    align-items: center;
+    grid-template-columns: 10% 90%;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.4);
+}
+
+.messages-header .ava{
+    margin: auto;
+}
+
+.messages-header .info{
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.ride-side-container .choose-chat{
+    padding: 5px;
+    background-color: rgba(44, 44, 44, 0.568);
+    border-radius: 10px;
+    width: fit-content;
+    margin: auto;
+    color: white;
+}
+
+.ride-side-container .choose-chat p{
+    margin: 0;
+    padding: 5px;
+}
+
+.loader{
+    margin: auto;
+}

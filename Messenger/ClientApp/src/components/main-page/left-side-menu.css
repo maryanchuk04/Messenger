@@ -1,0 +1,8 @@
+.left-sidebar-container{
+    display: grid;
+    grid-template-rows: 10vh 82vh;
+    height: inherit;
+    background-color: #17191a;
+    box-sizing: border-box;
+    border-right: 2px solid #202020;
+}

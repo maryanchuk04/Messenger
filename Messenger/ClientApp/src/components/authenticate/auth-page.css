@@ -1,0 +1,91 @@
+.container{
+    width: 30%;
+    height:fit-content;
+    margin: auto;
+    justify-content: center;
+
+}
+
+.page-auth{
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+}
+
+.form{
+  margin: auto;
+  padding: 30px;
+  height: inherit;
+  width: 100%;
+  min-height: 65vh;
+  height: 65vh;
+  background: linear-gradient(135deg,rgba(255,255,255,0.1),rgba(255,255,255,0.2));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 32px;
+}
+.form .title{
+    margin : 10px 0;
+    color : black;
+    height: 10%;
+}
+
+.form  .form-intro{
+    width: 85%;
+    margin: 40px auto;
+    height: 90%;
+   
+}
+
+.form  .form-intro .right{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.form .title{
+    text-align: center;
+
+}
+.form .title img{
+    width: 100%;
+}
+
+.form .form-intro  input{
+    border: none;
+    background-color: #f7aa777a;
+    border-radius: 10px;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    margin: 10px 0;
+    height: 40px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.6);
+
+}
+
+.field p{
+    margin: 10px 0 0 0;
+    color : black;
+}
+
+#signIn{
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.6);
+    border : 1px ;
+    border-radius: 10px;
+    width: 100%;
+    height: 40px;
+    margin: 20px 0;
+
+}
+
+.form-intro .haveAcc{
+    color: black;
+    text-decoration:underline;
+    text-align: center;
+    margin: 0;
+    cursor: pointer;
+}

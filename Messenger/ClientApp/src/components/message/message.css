@@ -1,0 +1,31 @@
+
+.message{
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.message .message-container{
+    color:white;
+    background-color: #232727;
+    width: fit-content;
+    max-width: 80%;
+    padding:  10px 15px;
+    height: fit-content;
+    display: inline-block;
+    align-items: center;
+    justify-content: inherit;
+    border-radius: 20px;
+    min-width: fit-content;
+}
+
+.message-container p{
+    margin: 0;
+    
+}
+
+.message .date{
+    margin-left: 10px;
+    color : rgb(66, 66, 66);
+}
