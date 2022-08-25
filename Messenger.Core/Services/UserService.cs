@@ -12,15 +12,18 @@ public class UserService : BaseService<User>, IUserService
 {
     private readonly ITokenService _tokenService;
     private readonly ISecurityContext _securityContext;
+    private readonly IMailService _mailService;
 
     public UserService(MessengerContext context,
         ITokenService tokenService,
         ISecurityContext securityContext,
-        IMapper mapper
+        IMapper mapper,
+        IMailService mailService
     ) : base(context, mapper)
     {
         _tokenService = tokenService;
         _securityContext = securityContext;
+        _mailService = mailService;
     }
 
     public async Task<AuthenticateResponseModel> Authenticate(string email, string password)
@@ -65,6 +68,7 @@ public class UserService : BaseService<User>, IUserService
         result.RefreshTokens.Add(refreshToken);
 
         await Context.SaveChangesAsync();
+        await _mailService.WelcomeSending(user.UserName, user.Email);
         return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
     }
 
@@ -77,6 +81,52 @@ public class UserService : BaseService<User>, IUserService
         await Context.SaveChangesAsync();
     }
 
+    public UserDto GetCurrentUser()
+    {
+        return Mapper.Map<UserDto>(CurrentUser());
+    }
+
+    public List<UserDto> GetAllUsers()
+    {
+        var res = Context.Users.Where(x=>x.Id != _securityContext.GetCurrentUserId()).ToList();
+        return Mapper.Map<List<UserDto>>(res);
+    }
+
+    public async Task ChangeUserName(string userName)
+    {
+        var user = CurrentUser();
+        if (userName.Length == 0)
+        {
+            throw new Exception("UserName must have any letters");
+        }
+
+        user.UserName = userName.Trim();
+        Update(user);
+        await Context.SaveChangesAsync();
+    }
+
+    public async Task ChangeEmail(string email)
+    {
+        var user = CurrentUser();
+        if (email.Length == 0)
+        {
+            throw new Exception("Email is not valid");
+        }
+
+        var old = user.Email;
+        user.Email = email;
+        Update(user);
+        await _mailService.ChangeMainMessage(user.UserName, old, email);
+        await Context.SaveChangesAsync();
+    }
+
+    public List<UserDto> SearchUsers(string keyword)
+    {
+        var users = Context.Users.Where(x => x.UserName.Contains(keyword)).ToList();
+
+        return Mapper.Map<List<User>, List<UserDto>>(users);
+    }
+
     private bool VerifyPassword(string passwordFromRequest, string password) => BCrypt.Net.BCrypt.Verify(passwordFromRequest,password);
 
     private User CurrentUser()
@@ -87,4 +137,6 @@ public class UserService : BaseService<User>, IUserService
 
         return user;
     }
+
+
 }

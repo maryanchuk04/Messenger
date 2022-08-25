@@ -1,7 +1,6 @@
 using AutoMapper;
 using Messenger.Core.DTOs;
 using Messenger.Core.IServices;
-using Messenger.Core.Services;
 using Messenger.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,17 +59,50 @@ public class UserController : ControllerBase
 
         HttpContext.Response.Cookies.Delete("refreshToken");
         HttpContext.Response.Cookies.Append("refreshToken", result.RefreshToken, cookieOptions);
-        return Ok();
+        return Ok(new { Token = result.JwtToken });
     }
 
 
-    [HttpPut("[action]")]
+    [HttpPost("[action]")]
     public async Task<IActionResult> ChangeAvatar(AvatarViewModel avatarViewModel)
     {
         await _userService.ChangeAvatar(avatarViewModel.Avatar);
         return Ok();
     }
 
+    [HttpGet("[action]")]
+    public IActionResult GetCurrentUserInfo()
+    {
+        var res = _mapper.Map<UserDto, UserViewModel>(_userService.GetCurrentUser());
+        return Ok(res);
+    }
+
+
+    [HttpGet("[action]")]
+    public IActionResult GetAllUsers()
+    {
+        return Ok(_mapper.Map<List<UserPreviewViewModel>>(_userService.GetAllUsers()));
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> ChangeUserName(UserNameViewModel userNameViewModel)
+    {
+        await _userService.ChangeUserName(userNameViewModel.UserName);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> ChangeMail(ChangeMailViewModel changeMail)
+    {
+        await _userService.ChangeEmail( changeMail.NewEmail);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public IActionResult SearchUsers(SearchViewModel searchViewModel)
+    {
+        return Ok(_userService.SearchUsers(searchViewModel.KeyWord));
+    }
 
 
 

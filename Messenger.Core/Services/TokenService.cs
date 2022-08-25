@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using AutoMapper;
 using Messenger.Core.DTOs;
 using Messenger.Core.Infrastructure;
@@ -9,6 +10,7 @@ using Messenger.db.EF;
 using Messenger.db.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,37 +18,39 @@ namespace Messenger.Core.Services;
 
 public class TokenService : BaseService<UserToken>, ITokenService
 {
-    private readonly IJwtSigningEncodingKey _signingEncodingKey;
-    private readonly IOptions<JwtOptions> _jwtOptions;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _config;
 
     public TokenService(
         MessengerContext context,
-        IJwtSigningEncodingKey signingEncodingKey,
-        IOptions<JwtOptions> jwtOptions,
         IHttpContextAccessor? httpContextAccessor,
-        IMapper mapper
+        IMapper mapper,
+        IConfiguration config
     ) : base(context)
     {
         _mapper = mapper;
-        _jwtOptions = jwtOptions;
         _httpContextAccessor = httpContextAccessor;
-        _signingEncodingKey = signingEncodingKey;
+        _config = config;
     }
 
     public string GenerateAccessToken(User user)
     {
-        var lifeTime = _jwtOptions.Value.LifeTime;
-        var claims = GetClaims(user);
-        var jwtToken = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.Now.AddSeconds(lifeTime),
-            signingCredentials: new SigningCredentials(
-                _signingEncodingKey.GetKey(),
-                _signingEncodingKey.SigningAlgorithm));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, $"{user.Id}")
+        };
+
+        var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+            _config["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddMinutes(30000),
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     private IEnumerable<Claim> GetClaims(User user)
