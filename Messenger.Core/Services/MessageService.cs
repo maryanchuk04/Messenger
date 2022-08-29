@@ -29,7 +29,9 @@ public class MessageService : BaseService<Message>, IMessageService
         var msg = Insert(new Message { RoomId = chat.Id, SenderId = sender, Content = text });
         await Context.SaveChangesAsync();
 
-        return msg;
+
+        var res = Context.Messages.Include(x=>x.Sender).First(x => x.Id == msg.Id);
+        return res;
     }
 
     public async Task<Room> GetRoom(Guid chatId, Guid sender)

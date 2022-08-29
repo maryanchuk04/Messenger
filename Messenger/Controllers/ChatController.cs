@@ -42,7 +42,7 @@ public class ChatController : ControllerBase
 
 
 
-[HttpGet("[action]/{chatId}")]
+    [HttpGet("[action]/{chatId}")]
     public async Task<IActionResult> GetChat(Guid chatId)
     {
         var id = _securityContext.GetCurrentUserId();

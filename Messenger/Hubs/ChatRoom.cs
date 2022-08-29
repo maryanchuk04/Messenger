@@ -15,7 +15,6 @@ public class ChatRoom : Hub
     private readonly IUserService _userService;
     private readonly IDictionary<string, string> _connections = new Dictionary<string, string>();
 
-
     public ChatRoom(IMessageService messageService, IUserService userService,ISecurityContext securityContext)
     {
         _messageService = messageService;
@@ -28,14 +27,11 @@ public class ChatRoom : Hub
         message = message.Trim();
         if (message != string.Empty)
         {
-            var connId = Context.ConnectionId;
             var currentUserId = _securityContext.GetCurrentUserId();
-            var res = await _messageService.Send(chatId, currentUserId,message);
-
-            var users = _messageService.GetChatUserIds(res.RoomId);
+            var res = await _messageService.Send(chatId, currentUserId, message);
 
             await Clients.Group(chatId.ToString()).SendAsync("RecieveMessage", res);
-
+            await Clients.Group(chatId.ToString()).SendAsync("ShowAlert", res);
         }
     }
 
@@ -46,6 +42,18 @@ public class ChatRoom : Hub
         Console.WriteLine("WORK");
         await Clients.Group(chatId).SendAsync("JoinToRoom", "Was connected to room");
         await SendUsersConnected(chatId);
+    }
+
+    public async Task JoinToUsersRooms(List<string> chatsIds)
+    {
+        foreach (var item in chatsIds)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, item);
+            _connections[Context.ConnectionId] = item;
+            Console.WriteLine("WORK");
+            await Clients.Group(item).SendAsync("JoinToUsersRooms", "Was connected to room");
+            await SendUsersConnected(item);
+        }
     }
 
 

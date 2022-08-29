@@ -9,9 +9,11 @@ import { UserService } from '../../Services/UserService';
 import { ChatService } from '../../Services/ChatService';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { isTemplateHead } from 'typescript';
-
+import Alert from '../alert/alert'
 
 const MainPage = () => {
+    const [showAlert, setShowAlert] = useState(false);
+    const [message, setMessage] = useState({});
     const [typing,setTyping] = useState(false);
     const[loading, setLoading]= useState(false);
     const base = new BaseService();
@@ -26,10 +28,9 @@ const MainPage = () => {
     const [conn,setConn] =  useState(null);
 
 
-    const join=async (item)=>{
+    const join=async (connections)=>{
         const connection = new HubConnectionBuilder()
         .withUrl("https://localhost:7023/chatRoom",{
-          
             accessTokenFactory: () => (localStorage.getItem('token'))
         })
         .configureLogging(LogLevel.Information)
@@ -44,6 +45,10 @@ const MainPage = () => {
             console.log("JOIN", res);
         })
 
+        connection.on("JoinToUsersRooms", (res)=>{
+            console.log("JOIN", res);
+        })
+
         connection.on("RecieveMessage",async (message) => {
             console.log("RecieveMessage", message);
             setMessages((oldArray) => [...oldArray, message]);
@@ -51,8 +56,18 @@ const MainPage = () => {
             if(res.ok){
                 const response = await res.json();
                 setUserChats(response);
+            
             }
+           
         });
+
+        connection.on("ShowAlert", async (message)=>{
+            await setMessage(message);
+            console.log("ShowAlert");
+            setShowAlert(true)
+            setTimeout(()=>setShowAlert(false), 5000);
+            
+        })
 
         connection.on("TypingMessage", (res)=>{
             console.log("Typing now");
@@ -62,10 +77,11 @@ const MainPage = () => {
 
 
         await connection.start();
-        console.log(item);
+        
         
         setConn(connection);
-        await connection?.invoke("JoinRoom", item?.id);
+        
+        await connection?.invoke("JoinToUsersRooms", connections);
     }
     
 
@@ -84,7 +100,9 @@ const MainPage = () => {
             setTimeout(()=>{window.location.reload()},5000);
         }
         const response = await res.json();
-        setUserChats(response);    
+        setUserChats(response);
+       
+        join(response.map(x=>x.id) );
     }
 
     const handleChoose =async (item) =>{
@@ -94,12 +112,12 @@ const MainPage = () => {
         if(res.ok){
             const response = await res.json();
             setMessages(response);
-            join(item);
+            
             
             console.log(response);
             setLoading(false);  
         }
-        await getUserChats();
+        //await getUserChats();
         console.log(item);
         
     }
@@ -140,6 +158,7 @@ const MainPage = () => {
                 setTyping = {setTyping}
             />
         </div>
+        {showAlert ? <Alert message={message} handleClose={setShowAlert}/> : <></>}
       </>
     
   )
